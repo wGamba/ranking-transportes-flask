@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Transports</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #ffffff;
+            color: #0a0a0a;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            padding: 72px 40px;
+            min-height: 100vh;
+        }
+
+        .wrap {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 64px;
+        }
+
+        .label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 300;
+            letter-spacing: -1.5px;
+            line-height: 1;
+            color: #0a0a0a;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 0;
+            margin-bottom: 56px;
+            border-bottom: 1px solid #0a0a0a;
+        }
+
+        .form-row input {
+            background: transparent;
+            border: none;
+            color: #0a0a0a;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            padding: 14px 0;
+            outline: none;
+            flex: 1;
+        }
+
+        .form-row input::placeholder {
+            color: #999;
+        }
+
+        .form-row input:nth-child(2) {
+            flex: 0 0 100px;
+            text-align: right;
+            padding-right: 24px;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .form-row button {
+            background: #0a0a0a;
+            border: none;
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .form-row button:hover {
+            opacity: 0.7;
+        }
+
+        /* Notificacion */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #0a0a0a;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            padding: 14px 24px;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            border-top: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        thead th {
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #888;
+            text-align: left;
+            padding: 12px 0;
+        }
+
+        thead th:last-child {
+            text-align: right;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.1s;
+        }
+
+        tbody tr:last-child {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tbody tr:hover {
+            background: #fafafa;
+        }
+
+        tbody td {
+            padding: 18px 0;
+            font-size: 14px;
+        }
+
+        .td-name {
+            font-weight: 400;
+            letter-spacing: -0.3px;
+            width: 40%;
+            color: #0a0a0a;
+        }
+
+        .td-speed {
+            color: #555;
+            font-size: 13px;
+            width: 25%;
+        }
+
+        .td-eq {
+            font-size: 13px;
+            color: #333;
+            width: 25%;
+        }
+
+        .td-eq strong {
+            font-weight: 500;
+            color: #0a0a0a;
+            font-size: 15px;
+        }
+
+        .td-action {
+            text-align: right;
+            width: 10%;
+        }
+
+        .btn-del {
+            background: none;
+            border: none;
+            color: #999;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .btn-del:hover {
+            color: #0a0a0a;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <div class="header">
+        <p class="label">Speed Calculator</p>
+        <h1>Transports</h1>
+    </div>
+
+    <form id="form" class="form-row">
+        <input type="text" id="metodo" placeholder="Transport name" required>
+        <input type="number" id="velocidad" placeholder="km/h" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Transport</th>
+                <th>Speed</th>
+                <th>Equivalent</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    async function load() {
+        const res = await fetch('/api/transportes');
+        const data = await res.json();
+        const tbody = document.getElementById('tbody');
+        tbody.innerHTML = '';
+        data.forEach(item => {
+            const eq = item.equivalencia_caminar;
+            const fmt = eq >= 10
+                ? eq.toLocaleString('en', { maximumFractionDigits: 0 })
+                : eq.toLocaleString('en', { maximumFractionDigits: 1 });
+            tbody.innerHTML += `
+                <tr>
+                    <td class="td-name">${item.metodo}</td>
+                    <td class="td-speed">${item.velocidad_kmh} km/h</td>
+                    <td class="td-eq"><strong>${fmt}x</strong> walking</td>
+                    <td class="td-action">
+                        <button class="btn-del" onclick="del(${item.id})">remove</button>
+                    </td>
+                </tr>`;
+        });
+    }
+
+    document.getElementById('form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const velocidad = parseFloat(document.getElementById('velocidad').value);
+
+        if (velocidad > 25000) {
+            showToast('Nothing is faster than a rocket.');
+            return;
+        }
+
+        await fetch('/api/transportes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                metodo: document.getElementById('metodo').value,
+                velocidad: velocidad
+            })
+        });
+        e.target.reset();
+        load();
+    });
+
+    async function del(id) {
+        if (confirm('Delete this entry?')) {
+            await fetch(`/api/transportes/${id}`, { method: 'DELETE' });
+            load();
+        }
+    }
+
+    load();
+</script>
+</body>
+</html>
