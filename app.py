@@ -39,6 +39,8 @@ def obtener_transportes():
 def agregar_transporte():
     try:
         datos = request.json
+        if not datos.get('metodo') or not datos.get('velocidad'):
+            return jsonify({"error": "Datos incompletos"}), 400
         conexion = conectar_bd()
         with conexion.cursor() as cursor:
             sql = "INSERT INTO ranking_transporte (metodo, velocidad_kmh) VALUES (%s, %s)"
