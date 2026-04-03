@@ -1,338 +1,309 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Speed Calculator - Transports</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    <meta charset="UTF-8">
+    <title>Transports</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        body {
-            /* Fondo ligeramente gris para que resalte la calculadora */
-            background: #f4f4f5;
-            color: #0a0a0a;
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 300;
-            padding: 50px 20px;
-            min-height: 100vh;
-        }
+        body {
+            background: #ffffff;
+            color: #0a0a0a;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            padding: 72px 40px;
+            min-height: 100vh;
+        }
 
-        .wrap {
-            max-width: 700px;
-            margin: 0 auto;
-            /* Tarjeta blanca con sombra */
-            background: #ffffff;
-            padding: 50px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        }
+        .wrap {
+            max-width: 640px;
+            margin: 0 auto;
+        }
 
-        .header {
-            margin-bottom: 50px;
-        }
+        .header {
+            margin-bottom: 64px;
+        }
 
-        .label {
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #888;
-            margin-bottom: 12px;
-        }
+        .label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 12px;
+        }
 
-        h1 {
-            font-size: 2.8rem;
-            font-weight: 300;
-            letter-spacing: -1.5px;
-            line-height: 1;
-            color: #0a0a0a;
-        }
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 300;
+            letter-spacing: -1.5px;
+            line-height: 1;
+            color: #0a0a0a;
+        }
 
-        .form-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 50px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid #eaeaea;
-        }
+        .form-row {
+            display: flex;
+            gap: 0;
+            margin-bottom: 56px;
+            border-bottom: 1px solid #0a0a0a;
+        }
 
-        .form-row input {
-            background: #f9f9f9;
-            border: 1px solid #eaeaea;
-            border-radius: 8px;
-            color: #0a0a0a;
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 300;
-            font-size: 14px;
-            padding: 14px 20px;
-            outline: none;
-            flex: 1;
-            transition: border-color 0.2s;
-        }
+        .form-row input {
+            background: transparent;
+            border: none;
+            color: #0a0a0a;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            padding: 14px 0;
+            outline: none;
+            flex: 1;
+        }
 
-        .form-row input:focus {
-            border-color: #0a0a0a;
-        }
+        .form-row input::placeholder {
+            color: #999;
+        }
 
-        .form-row input::placeholder {
-            color: #999;
-        }
+        .form-row input:nth-child(2) {
+            flex: 0 0 100px;
+            text-align: right;
+            padding-right: 24px;
+        }
 
-        .form-row input:nth-child(2) {
-            flex: 0 0 120px;
-        }
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
 
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
+        .form-row button {
+            background: #0a0a0a;
+            border: none;
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
 
-        .form-row button {
-            background: #0a0a0a;
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding: 0 25px;
-            cursor: pointer;
-            transition: opacity 0.2s, transform 0.1s;
-        }
+        .form-row button:hover {
+            opacity: 0.7;
+        }
 
-        .form-row button:hover {
-            opacity: 0.8;
-        }
-        
-        .form-row button:active {
-            transform: scale(0.96);
-        }
+        /* Notificacion */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #0a0a0a;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            padding: 14px 24px;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
 
-        .toast {
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: #0a0a0a;
-            color: #fff;
-            font-size: 13px;
-            font-weight: 400;
-            padding: 14px 28px;
-            border-radius: 30px;
-            opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
-            pointer-events: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
 
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+        thead tr {
+            border-top: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+        }
 
-        thead th {
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #888;
-            text-align: left;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #eaeaea;
-        }
+        thead th {
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #888;
+            text-align: left;
+            padding: 12px 0;
+        }
 
-        thead th:last-child {
-            text-align: right;
-        }
+        thead th:last-child {
+            text-align: right;
+        }
 
-        tbody tr {
-            border-bottom: 1px solid #f4f4f5;
-            transition: background 0.2s;
-        }
+        tbody tr {
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.1s;
+        }
 
-        tbody tr:hover {
-            background: #fafafa;
-        }
+        tbody tr:last-child {
+            border-bottom: 1px solid #e0e0e0;
+        }
 
-        tbody td {
-            padding: 20px 10px;
-            font-size: 14px;
-        }
+        tbody tr:hover {
+            background: #fafafa;
+        }
 
-        .td-name {
-            font-weight: 500;
-            width: 40%;
-            color: #0a0a0a;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .icon-box {
-            font-size: 1.4rem;
-        }
+        tbody td {
+            padding: 18px 0;
+            font-size: 14px;
+        }
 
-        .td-speed {
-            color: #555;
-            width: 20%;
-        }
+        .td-name {
+            font-weight: 400;
+            letter-spacing: -0.3px;
+            width: 40%;
+            color: #0a0a0a;
+        }
 
-        .td-eq {
-            color: #555;
-            width: 30%;
-        }
+        .td-speed {
+            color: #555;
+            font-size: 13px;
+            width: 25%;
+        }
 
-        .td-eq strong {
-            font-weight: 500;
-            color: #0a0a0a;
-        }
+        .td-eq {
+            font-size: 13px;
+            color: #333;
+            width: 25%;
+        }
 
-        .td-action {
-            text-align: right;
-            width: 10%;
-        }
+        .td-eq strong {
+            font-weight: 500;
+            color: #0a0a0a;
+            font-size: 15px;
+        }
 
-        .btn-del {
-            background: none;
-            border: none;
-            color: #ff4d4f;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: opacity 0.2s;
-            opacity: 0.6;
-        }
+        .td-action {
+            text-align: right;
+            width: 10%;
+        }
 
-        .btn-del:hover {
-            opacity: 1;
-        }
-    </style>
+        .btn-del {
+            background: none;
+            border: none;
+            color: #999;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .btn-del:hover {
+            color: #0a0a0a;
+        }
+    </style>
 </head>
 <body>
-
 <div class="wrap">
-    <div class="header">
-        <p class="label">Speed Calculator</p>
-        <h1>Transports</h1>
-    </div>
 
-    <form id="form" class="form-row">
-        <input type="text" id="metodo" placeholder="Transport name (e.g. Train)" required>
-        <input type="number" id="velocidad" placeholder="km/h" step="any" required>
-        <button type="submit">Add</button>
-    </form>
+    <div class="header">
+        <p class="label">Speed Calculator</p>
+        <h1>Transports</h1>
+    </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Transport Name</th>
-                <th>Speed (km/h)</th>
-                <th>Walking Eq.</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-    </table>
+    <form id="form" class="form-row">
+        <input type="text" id="metodo" placeholder="Transport name" required>
+        <input type="number" id="velocidad" placeholder="km/h" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Transport</th>
+                <th>Speed</th>
+                <th>Equivalent</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3500);
-    }
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3500);
+    }
 
-    // Funcion para decidir que icono poner segun la velocidad
-    function getSpeedIcon(speed) {
-        if (speed >= 1000) return '🚀';
-        if (speed >= 300) return '✈️';
-        if (speed >= 100) return '🚄';
-        if (speed >= 50) return '🚗';
-        if (speed >= 15) return '🚲';
-        if (speed >= 5) return '🏃';
-        return '🚶';
-    }
+    async function load() {
+        const res = await fetch('/api/transportes');
+        const data = await res.json();
+        const tbody = document.getElementById('tbody');
+        tbody.innerHTML = '';
+        data.forEach(item => {
+            const eq = item.equivalencia_caminar;
+            const fmt = eq >= 10
+                ? eq.toLocaleString('en', { maximumFractionDigits: 0 })
+                : eq.toLocaleString('en', { maximumFractionDigits: 1 });
+            tbody.innerHTML += `
+                <tr>
+                    <td class="td-name">${item.metodo}</td>
+                    <td class="td-speed">${item.velocidad_kmh} km/h</td>
+                    <td class="td-eq"><strong>${fmt}x</strong> walking</td>
+                    <td class="td-action">
+                        <button class="btn-del" onclick="del(${item.id})">remove</button>
+                    </td>
+                </tr>`;
+        });
+    }
 
-    async function load() {
-        const res = await fetch('/api/transportes');
-        const data = await res.json();
-        const tbody = document.getElementById('tbody');
-        tbody.innerHTML = '';
-        
-        data.forEach(item => {
-            const eq = item.equivalencia_caminar;
-            const fmt = eq >= 10
-                ? eq.toLocaleString('en', { maximumFractionDigits: 0 })
-                : eq.toLocaleString('en', { maximumFractionDigits: 1 });
-            
-            // Obtenemos el icono
-            const icon = getSpeedIcon(item.velocidad_kmh);
+    document.getElementById('form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const velocidad = parseFloat(document.getElementById('velocidad').value);
 
-            tbody.innerHTML += `
-                <tr>
-                    <td class="td-name">
-                        <span class="icon-box">${icon}</span>
-                        ${item.metodo}
-                    </td>
-                    <td class="td-speed">${item.velocidad_kmh}</td>
-                    <td class="td-eq"><strong>${fmt}x</strong> faster</td>
-                    <td class="td-action">
-                        <button class="btn-del" onclick="del(${item.id})">Del</button>
-                    </td>
-                </tr>`;
-        });
-    }
+        if (velocidad > 25000) {
+            showToast('Nothing is faster than a rocket.');
+            return;
+        }
 
-    document.getElementById('form').addEventListener('submit', async e => {
-        e.preventDefault();
-        const velocidad = parseFloat(document.getElementById('velocidad').value);
+        await fetch('/api/transportes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                metodo: document.getElementById('metodo').value,
+                velocidad: velocidad
+            })
+        });
+        e.target.reset();
+        load();
+    });
 
-        if (velocidad > 25000) {
-            showToast('Nothing is faster than a rocket.');
-            return;
-        }
+    async function del(id) {
+        if (confirm('Delete this entry?')) {
+            await fetch(`/api/transportes/${id}`, { method: 'DELETE' });
+            load();
+        }
+    }
 
-        await fetch('/api/transportes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                metodo: document.getElementById('metodo').value,
-                velocidad: velocidad
-            })
-        });
-        e.target.reset();
-        load();
-    });
-
-    async function del(id) {
-        if (confirm('Delete this entry?')) {
-            await fetch(`/api/transportes/${id}`, { method: 'DELETE' });
-            load();
-        }
-    }
-
-    load();
+    load();
 </script>
 </body>
 </html>
